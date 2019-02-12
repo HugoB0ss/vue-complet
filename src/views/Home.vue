@@ -4,7 +4,7 @@
       <button class="btn" @click="switchView()">Switch to {{view === 0 ? 'list' : 'thumbnails'}}</button>
     </nav>
     <div class="container">
-      <HelloWorld :content="content"/>
+      <HelloWorld :view="view"/>
     </div>
   </div>
 </template>
@@ -20,17 +20,12 @@ export default {
   },
   data () {
     return {
-      content: [{ id: 1, abc: 1, content: 1, title: '1235654215634315624210' }, { id: 2, abc: 1, content: 1, title: 2 }, { id: 3, abc: 1, content: 1, title: 2 }],
       view: 1
     }
   },
   methods: {
     switchView: function () {
       this.view = (this.view + 1) % 2
-      fetch('https://www.thermiefrance.com/wp-json/wp/v2/posts')
-        .then((result) => {
-          console.log(result.body.getReader())
-        })
     }
   }
 }

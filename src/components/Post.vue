@@ -1,8 +1,8 @@
 <template>
-  <div class="post col-xs-10 mx-auto mt-3 col-sm-3 col-md-3 align-baseline">
-    <h3 class="title">{{item.title}}</h3>
-    <span>item.timeElapsed</span>
-    <p>item.content</p>
+  <div class="post col-xs-10 mx-auto mt-3 col-sm-5 col-md-5 align-baseline">
+    <p class="title">{{item.title}}</p>
+    <span class="date">{{item.date}}</span>
+    <p class="content">{{item.content}}</p>
   </div>
 </template>
 
@@ -21,10 +21,17 @@ export default {
 }
 .title{
   background-color: #2980b9 ;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+.date{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .content {
-  overflow: auto;
+  height: 70%;
 }
 
 </style>

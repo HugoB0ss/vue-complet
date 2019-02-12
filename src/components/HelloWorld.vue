@@ -1,6 +1,6 @@
 <template>
   <div class="hello row">
-    <Post v-for="item in this.content" :key="item.id" :item="item"/>
+    <Post v-for="item in content" :key="item.title" :item="item"/>
   </div>
 </template>
 
@@ -11,14 +11,38 @@ export default {
   components: {
     Post
   },
-  props: ['content']
+  created () {
+    this.getData()
+  },
+  data () {
+    return {
+      content: null
+    }
+  },
+  methods: {
+    getData: function () {
+      const vm = this
+      fetch('http://www.madeinblue.com/wp-json/wp/v2/posts')
+        .then((response) => {
+          return response.json()
+        }).then((result) => {
+          vm.content = result.map((article) => {
+            return {
+              title: article.title.rendered,
+              content: new DOMParser().parseFromString(article.excerpt.rendered, 'text/html').body.textContent,
+              date: article.date_gmt
+            }
+          })
+        })
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .hello {
-  height: 100%;
+  min-height: 100%;
   background-color: #EEEEEE;
 }
 ul {
