@@ -1,6 +1,10 @@
 <template>
   <div class="hello row">
-    <Post v-for="item in content" :key="item.title" :item="item"/>
+    <Post
+		v-for="item in content"
+		:key="item.title"
+		:item="item"
+		:view="view"/>
   </div>
 </template>
 
@@ -11,28 +15,38 @@ export default {
   components: {
     Post
   },
+  props: ['view'],
   created () {
     this.getData()
   },
   data () {
     return {
-      content: null
+      content: [],
+	  urls: ['http://www.madeinblue.com/wp-json/wp/v2/posts', 'https://www.go-interim.fr/wp-json/wp/v2/posts']
     }
   },
   methods: {
     getData: function () {
       const vm = this
-      fetch('http://www.madeinblue.com/wp-json/wp/v2/posts')
-        .then((response) => {
-          return response.json()
-        }).then((result) => {
-          vm.content = result.map((article) => {
-            return {
-              title: article.title.rendered,
-              content: new DOMParser().parseFromString(article.excerpt.rendered, 'text/html').body.textContent,
-              date: article.date_gmt
-            }
-          })
+	  this.urls.forEach(url => {
+		  fetch(url)
+			.then((response) => {
+			  return response.json()
+			}).then((result) => {
+			  vm.content = vm.content
+							 .concat(result
+									.map((article) => {
+										return {
+										  title: article.title.rendered,
+										  content: new DOMParser()
+													.parseFromString(article.excerpt.rendered, 'text/html')
+													.body
+													.textContent
+													.substring(0, 50),
+										  date: article.date_gmt
+										}
+									}))
+			})
         })
     }
   }
