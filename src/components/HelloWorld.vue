@@ -42,7 +42,7 @@ export default {
 													.parseFromString(article.excerpt.rendered, 'text/html')
 													.body
 													.textContent
-													.substring(0, 50),
+													.substring(0, 80),
 										  date: article.date_gmt
 										}
 									}))
